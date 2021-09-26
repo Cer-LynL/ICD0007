@@ -86,7 +86,6 @@ input[type='text'], select{
     width: 15rem;
     padding: 0.3rem;
     margin-top: 3px;
-    display: inline-block;
     border: 1px solid #ccc;
     background-color: white;
     border-radius: .25rem;
