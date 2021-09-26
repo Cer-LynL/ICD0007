@@ -3,93 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body id="author-list-page">
-<table width="100%">
-    <tr>
-        <td></td>
-        <td width="1000px">
+<div id="root">
+    <nav>
+        <div>
+            <a href="index.html" id="book-list-link">Raamatud</a>
+            <span>|</span>
+            <a href="book-add.html" id="book-form-link">Lisa raamat</a>
+            <span>|</span>
+            <a href="author-list.html" id="author-list-link">Autorid</a>
+            <span>|</span>
+            <a href="author-add.html" id="author-form-link">Lisa autor</a>
+        </div>
+    </nav>
+    <main>
+        <br>
+        <div id="author-list">
+            <div class="header-a">Eesnimi</div>
+            <div class="header-b">Perekonnanimi</div>
+            <div class="header-hinne">Hinne</div>
+            <div class="header-divider"></div>
 
-            <table width="100%">
-                <tr>
-                    <td>
-                        <table width="100%">
-                            <tr>
-                                <td><a href="index.html" id="book-list-link">Raamatud</a>
-                                    | <a href="book-add.html" id="book-form-link">Lisa raamat</a>
-                                    | <a href="author-list.html" id="author-list-link">Autorid</a>
-                                    | <a href="author-add.html" id="author-form-link">Lisa autor</a></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <br>
-                        <table border="0" width="1000px">
-                            <tr>
-                                <td width="33%">Eesnimi</td>
-                                <td width="33%">Perekonnanimi</td>
-                                <td width="33%">Hinne</td>
-                            </tr>
-                            <tr>
-                                <td>Kai-Fu</td>
-                                <td>Lee</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Brian</td>
-                                <td>Christian</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Tony</td>
-                                <td>Saldanha</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Alessandro</td>
-                                <td>Parisi</td>
-                                <td> </td>
-                            </tr>
-                            <tr>
-                                <td>Name 5</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Name 6</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Name 7</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <br>
-                        <table width="100%">
-                            <tr>
-                                <td align="left">ICD0007 Näidisrakendus</td>
-
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-
-            </table>
-
-        </td>
-        <td></td>
-    </tr>
-</table>
-<br>
-
+            <div class="first">
+                <a href="">Kai-Fu </a>
+            </div>
+            <div class="second">Lee </div>
+            <div class="break"></div>
+            <div>
+                <span class="filledStar">★</span>
+                <span class="filledStar">★</span>
+                <span class="filledStar">★</span>
+                <span class="emptyStar">★</span>
+                <span class="emptyStar">★</span>
+            </div>
+            <div class="break"></div>
+            <div class="first">
+                <a href="">Tony </a>
+            </div>
+            <div class="second">Saldanha </div>
+            <div class="break"></div>
+            <div>
+                <span class="filledStar">★</span>
+                <span class="filledStar">★</span>
+                <span class="filledStar">★</span>
+                <span class="filledStar">★</span>
+                <span class="emptyStar">★</span>
+            </div>
+            <div class="break"></div>
+            <div class="first">
+                <a href="">Tom </a>
+            </div>
+            <div class="second">Griffiths </div>
+            <div class="break"></div>
+            <div>
+                <span class="filledStar">★</span>
+                <span class="filledStar">★</span>
+                <span class="filledStar">★</span>
+                <span class="filledStar">★</span>
+                <span class="filledStar">★</span>
+            </div>
+            <div class="break"></div>
+            <div class="first">
+                <a href="">Leo </a>
+            </div>
+            <div class="second">Jams </div>
+            <div class="break"></div>
+            <div>
+                <span class="filledStar">★</span>
+                <span class="filledStar">★</span>
+                <span class="emptyStar">★</span>
+                <span class="emptyStar">★</span>
+                <span class="emptyStar">★</span>
+            </div>
+        </div>
+    </main>
+    <footer>
+        ICD007 Näidisrakendus
+    </footer>
+</div>
 </body>
 </html>

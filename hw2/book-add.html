@@ -3,104 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body id="book-form-page">
-<table width="100%">
-    <tr>
-        <td></td>
-        <td width="1000px">
-
-            <table width="100%">
-                <tr>
-                    <td>
-                        <table width="100%">
-                            <tr>
-                                <td><a href="index.html" id="book-list-link">Raamatud</a>
-                                    | <a href="book-add.html" id="book-form-link">Lisa raamat</a>
-                                    | <a href="author-list.html" id="author-list-link">Autorid</a>
-                                    | <a href="author-add.html" id="author-form-link">Lisa autor</a></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <br>
-                        <table border="0" width="1000px">
-                            <tr>
-                                <td width="10%">Pealkiri:</td>
-                                <td width="90%"><input type="text"></td>
-                            </tr>
-                            <tr>
-                                <td width="10%">Autor 1:</td>
-                                <td width="90%">
-                                    <select>
-                                        <option></option>
-                                        <option value="o1">Kai-Fu Lee</option>
-                                        <option value="o2">Brian Christian</option>
-                                        <option value="o2">Tony Saldanha</option>
-                                        <option value="o2">Alessandro Parisi</option>
-                                        <option value="o2">Tom Griffiths</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="10%">Autor 2:</td>
-                                <td width="90%">
-                                    <select>
-                                        <option></option>
-                                        <option value="o1">Kai-Fu Lee</option>
-                                        <option value="o2">Brian Christian</option>
-                                        <option value="o2">Tony Saldanha</option>
-                                        <option value="o2">Alessandro Parisi</option>
-                                        <option value="o2">Tom Griffiths</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="10%">Hinne:</td>
-                                <td width="90%">
-                                    <input type="radio" name="r1"> 1
-                                    <input type="radio" name="r1" checked="checked"> 2
-                                    <input type="radio" name="r1" checked="checked"> 3
-                                    <input type="radio" name="r1" checked="checked"> 4
-                                    <input type="radio" name="r1" checked="checked"> 5
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="10%">Loetud:</td>
-                                <td width="90%">
-                                    <input type="checkbox">
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                </tr>
-                <tr align="right">
-                    <td align="right">
-                        <br>
-                        <input type="submit" value="Salvesta">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <br>
-                        <table width="100%">
-                            <tr>
-                                <td align="left">ICD0007 Näidisrakendus</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-
-            </table>
-
-        </td>
-        <td></td>
-    </tr>
-</table>
-<br>
-
+<div id="root">
+    <nav>
+        <div>
+            <a href="index.html" id="book-list-link">Raamatud</a>
+            <span>|</span>
+            <a href="book-add.html" id="book-form-link">Lisa raamat</a>
+            <span>|</span>
+            <a href="author-list.html" id="author-list-link">Autorid</a>
+            <span>|</span>
+            <a href="author-add.html" id="author-form-link">Lisa autor</a>
+        </div>
+    </nav>
+    <main>
+      <form id="input-form">
+          <div class="label-cell"><label>Pealkiri: </label></div>
+          <div class="input-cell"><input id="title" name="title" type='text' value=""></div>
+          <div class="break"></div>
+          <div class="label-cell"><label>Autor 1: </label></div>
+          <div class="input-cell">
+              <select>
+                  <option></option>
+                  <option value="o1">Kai-Fu Lee</option>
+                  <option value="o2">Brian Christian</option>
+                  <option value="o3">Tony Saldanha</option>
+                  <option value="o4">Alessandro Parisi</option>
+                  <option value="o5">Tom Griffiths</option>
+              </select>
+          </div>
+          <div class="break"></div>
+          <div class="label-cell"><label>Autor 2: </label></div>
+          <div class="input-cell">
+              <select>
+                  <option></option>
+                  <option value="o1">Kai-Fu Lee</option>
+                  <option value="o2">Brian Christian</option>
+                  <option value="o3">Tony Saldanha</option>
+                  <option value="o4">Alessandro Parisi</option>
+                  <option value="o5">Tom Griffiths</option>
+              </select>
+          </div>
+          <div class="break"></div>
+          <div class="label-cell">Hinne: </div>
+          <div class="input-cell">
+              <input type="radio" name="r1"> 1
+              <input type="radio" name="r1" checked="checked"> 2
+              <input type="radio" name="r1" checked="checked"> 3
+              <input type="radio" name="r1" checked="checked"> 4
+              <input type="radio" name="r1" checked="checked"> 5
+          </div>
+          <div class="break"></div>
+          <div class="label-cell"><label>Loetud:</label></div>
+          <div class="input-cell"><input type="checkbox"/></div>
+          <div class="break"></div>
+          <div class="label-cell"></div>
+          <div class="input-cell">
+              <input type="submit" class="button" value="Salvesta">
+          </div>
+      </form>
+    </main>
+    <footer>
+        ICD007 Näidisrakendus
+    </footer>
+</div>
 </body>
 </html>
