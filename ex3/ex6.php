@@ -4,6 +4,7 @@ include_once __DIR__ . '/Post.php';
 
 const DATA_FILE = __DIR__ . '/data/posts.txt';
 
+
 function getAllPosts() : array {
 
     $lines = file(DATA_FILE);

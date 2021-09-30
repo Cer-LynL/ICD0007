@@ -8,7 +8,6 @@ s.listen()
 data = b'''
 HTTP/1.1 200
 Content-Type: text/plain
-
 Browser sent the following:
 
 '''

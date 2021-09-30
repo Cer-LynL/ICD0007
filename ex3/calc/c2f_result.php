@@ -33,7 +33,6 @@ function c2f($temp) {
     <main>
 
         <h3>Celsius to Fahrenheit</h3>
-
         <em><?= $message ?></em>
 
     </main>

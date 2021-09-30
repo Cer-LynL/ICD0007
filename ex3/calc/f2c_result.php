@@ -33,7 +33,6 @@ function f2c($temp) {
     <main>
 
         <h3>Fahrenheit to Celsius</h3>
-
         <em><?= $message ?></em>
 
     </main>
