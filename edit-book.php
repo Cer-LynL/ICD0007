@@ -4,25 +4,49 @@ session_start();
 
 require_once("book-functions.php");
 
+$books = getAllBooks();
+
 $errors = [];
-
 $title = "";
-$isRead = "";
 $grade = "";
+$isRead = "";
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $title = $_POST["title"] ?? "";
-    $grade = $_POST["grade"] ?? "";
-    $isRead = $_POST["isRead"] ?? "";
+$book = null;
 
-    if (strlen($title) < 3 || strlen($title) > 28) {
-        $errors[] = "Pealkiri peab olema 3 kuni 28 tähemärki!";
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
+    if (isset($_GET["title"])) {
+        $book = getBookByTitle($_GET["title"]);
+
+        $title = $book["title"];
+        $grade = $book["grade"];
+        $isRead = $book["isRead"];
     }
 
-    if (empty($errors)) {
-        saveBook($title, $grade, $isRead);
-        $_SESSION["message"] = "Lisatud!";
+} elseif ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $originalTitle = $_POST["originalTitle"];
+    editBook($originalTitle, $title, $grade, $isRead);
+    header("Location: /");
+
+    if (isset($_POST["deleteButton"])) {
+        $bookToDelete = $_POST["book-to-delete"];
+        echo $bookToDelete;
+
+        deleteBook($bookToDelete);
+
         header("Location: /");
+    } else {
+        $title = $_POST["title"] ?? "";
+        $grade = $_POST["grade"] ?? "";
+        $isRead = $_POST["isRead"] ?? "";
+
+        if (strlen($title) < 3 || strlen($title) > 28) {
+            $errors[] = "Pealkiri peab olema 3 kuni 28 tähemärki!";
+        }
+        if (empty($errors)) {
+            saveBook($title, $grade, $isRead);
+            $_SESSION["message"] = "Lisatud!";
+            header("Location: /");
+        }
     }
 }
 
@@ -51,19 +75,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <main>
 
         <?php if (!(empty($errors))): ?>
-            <div id="error-block" class="alert">
-                <?php foreach ($errors as $error): ?>
-                    <?= $error ?><br>
-                <?php endforeach; ?>
-            </div>
+        <div id="error-block" class="alert">
+            <?php foreach ($errors as $error): ?>
+                <?= $error ?><br
+            <?php endforeach; ?>
+        </div>
         <?php endif; ?>
 
-        <form id="input-form" action="book-add.php" method="post">
+        <form id="input-form" action="edit-book.php" method="post">
             <div class="label-cell">
                 <label for="title">Pealkiri: </label>
             </div>
             <div class="input-cell">
-                <input id="title" name="title" type='text' value="<?= $title ?>">
+                <input id="title" name="title" type='text' value="<?= $book["title"] ?>">
+                <input type="hidden" name="originalTitle" value="<?= $book["title"] ?>"/>
             </div>
             <div class="break"></div>
             <div class="label-cell">Hinne: </div>
@@ -88,12 +113,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="label-cell"><label>Loetud:</label></div>
             <div class="input-cell"><label>
                     <input id="isRead" name="isRead" type="checkbox" value="true" <?php if ($isRead == 'true') echo 'checked' ?>/>
-                </label>
-            </div>
+                </label></div>
             <div class="break"></div>
             <div class="label-cell"></div>
             <div class="input-cell">
                 <input name="submitButton" type="submit" class="button" value="Salvesta">
+                <input name="deleteButton" type="submit" class="deleteButton" value="Kustuta"/>
             </div>
         </form>
     </main>

@@ -51,6 +51,37 @@
     border: none;
 }
 
+.deleteButton {
+    width: 8rem;
+    color: white;
+    background: mediumvioletred;
+    font-size: medium;
+    border: none;
+}
+
+.alert {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.message {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert, .message {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: .25rem;
+
+    line-height: 1.7rem;
+
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 1rem;
+}
+
 main {
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -69,14 +100,14 @@ nav span {
 }
 
 nav, footer {
-    background-color: #CDEDF6;
+    background-color: lavender;
     border-radius: .25rem;
     padding-top: 0.5rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     border-width: 1px;
     border-style: solid;
-    border-color: #CDEDF6;
+    border-color: lavender;
     font-family: Verdana, sans-serif;
     text-decoration: none;
 }
@@ -122,6 +153,7 @@ input[type='text'], select{
     width: 100%;
     flex-wrap: wrap;
     line-height: 2rem;
+    background-color: aliceblue;
 }
 
 #author-list div.header-divider {

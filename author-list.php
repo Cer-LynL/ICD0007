@@ -1,8 +1,10 @@
 <?php
 
+session_start();
+
 require_once("author-functions.php");
 
-$names = getAllAuthors();
+$authors = getAllAuthors();
 
 ?>
 <!DOCTYPE html>
@@ -15,7 +17,7 @@ $names = getAllAuthors();
 <body id="author-list-page">
 <div id="root">
     <nav>
-
+       <div>
             <a href="index.php" id="book-list-link">Raamatud</a>
             <span>|</span>
             <a href="book-add.php" id="book-form-link">Lisa raamat</a>
@@ -23,8 +25,19 @@ $names = getAllAuthors();
             <a href="author-list.php" id="author-list-link">Autorid</a>
             <span>|</span>
             <a href="author-add.php" id="author-form-link">Lisa autor</a>
+       </div>
     </nav>
     <main>
+
+        <?php if (isset($_SESSION["message"])): ?>
+            <div id="message-block" class="message">
+                <?php
+                echo $_SESSION["message"];
+                unset($_SESSION["message"]);
+                ?>
+            </div>
+        <?php endif; ?>
+
         <br>
         <div id="author-list">
             <div class="header-a">Eesnimi</div>
@@ -32,27 +45,23 @@ $names = getAllAuthors();
             <div class="header-hinne">Hinne</div>
             <div class="header-divider"></div>
 
-            <?php foreach ($names as $each): ?>
+            <?php foreach ($authors as $author): ?>
 
                 <div class="first">
-                    <a><?= $each["firstName"] ?></a>
+                    <a href="edit-author.php?firstName=<?= urlencode($author["firstName"]) ?>"><?= $author["firstName"] ?></a>
                 </div>
 
                 <div class="first">
-                    <a><?= $each["lastName"] ?></a>
+                    <a><?= $author["lastName"] ?></a>
                 </div>
 
                 <div class="break">
-
                 </div>
 
                 <div>
-                    <span class="filledStar">★</span>
-                    <span class="filledStar">★</span>
-                    <span class="filledStar">★</span>
-                    <span class="emptyStar">★</span>
-                    <span class="emptyStar">★</span>
+                    <a><?= $author["grade"] ?></a>
                 </div>
+
                 <div class="break"></div>
 
             <?php endforeach; ?>

@@ -25,3 +25,49 @@ function getAllAuthors() : array{
 
     return $names;
 }
+
+function deleteAuthor($firstName, $lastName) {
+    $authors = getAllAuthors();
+    $data = "";
+
+    foreach ($authors as $author) {
+        if (($author["firstName"] !== $firstName) && ($author["lastName"] !== $lastName)) {
+            $data = $data . urlencode($author["firstName"])
+                . ", " . urlencode($author["lastName"])
+                . ", " . urlencode($author["grade"]) . PHP_EOL;
+        }
+    }
+
+    file_put_contents(DATA_FILE, $data);
+}
+
+function editAuthor($originalFirst, $originalLast, $firstName, $lastName, $grade) {
+    $authors = getAllAuthors();
+    $data = "";
+
+    foreach ($authors as $author) {
+        if (($author["firstName"] === $originalFirst) && ($author["lastName"] === $originalLast)){
+            $author["firstName"] = $firstName;
+            $author["lastName"] = $lastName;
+            $author["grade"] = $grade;
+        }
+
+        $data = $data . urlencode($author["firstName"])
+            . ", " . urlencode($author["lastName"])
+            . ", " . urlencode($author["grade"]) . PHP_EOL;
+    }
+
+    file_put_contents(DATA_FILE, $data);
+}
+
+function getBookByAuthor($firstName) {
+    $authors = getAllAuthors();
+
+    foreach ($authors as $author) {
+        if ($author["firstName"] === $firstName) {
+            return $author;
+        }
+    }
+
+    return null;
+}

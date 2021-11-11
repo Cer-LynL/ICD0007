@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require_once("book-functions.php");
 
 $books = getAllBooks();
@@ -27,6 +29,16 @@ $books = getAllBooks();
         </div>
     </nav>
     <main>
+
+        <?php if (isset($_SESSION["message"])): ?>
+            <div id="message-block" class="message">
+                <?php
+                echo $_SESSION["message"];
+                unset($_SESSION["message"]);
+                ?>
+            </div>
+        <?php endif; ?>
+
         <br>
         <div id="author-list">
             <div class="header-a">Pealkiri</div>
@@ -37,18 +49,13 @@ $books = getAllBooks();
             <?php foreach ($books as $each): ?>
 
                 <div class="first">
-                    <a><?= $each["title"] ?></a>
-
+                    <a href="edit-book.php?title=<?= urlencode($each["title"]) ?>"><?= $each["title"] ?></a>
                 </div>
 
                 <div class="break"></div>
 
                 <div>
-                    <span class="filledStar">★</span>
-                    <span class="filledStar">★</span>
-                    <span class="filledStar">★</span>
-                    <span class="emptyStar">★</span>
-                    <span class="emptyStar">★</span>
+                    <a><?= $each["grade"] ?></a>
                 </div>
 
                 <div class="break"></div>

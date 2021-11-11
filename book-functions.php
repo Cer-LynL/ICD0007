@@ -14,14 +14,60 @@ function saveBook($title, $grade, $isRead) {
 function getAllBooks(): array
 {
 
-        $lines = file(DATA_FILE);
+    $lines = file(DATA_FILE);
 
-        $books = [];
+    $books = [];
 
-        foreach ($lines as $line) {
-            list($title, $grade, $isRead) = explode(",", $line);
-            $books[] = ["title" => urldecode($title), "grade" => urldecode($grade), "isRead" => urldecode($isRead)];
+    foreach ($lines as $line) {
+        list($title, $grade, $isRead) = explode(",", $line);
+        $books[] = ["title" => urldecode($title), "grade" => urldecode($grade), "isRead" => urldecode($isRead)];
+    }
+
+    return $books;
+}
+
+function deleteBook($title) {
+    $books = getAllBooks();
+    $data = "";
+
+    foreach ($books as $book) {
+        if ($book["title"] !== $title) {
+            $data = $data . urlencode($book["title"])
+                . "," . urlencode($book["grade"])
+                . "," . urlencode($book["isRead"]) . PHP_EOL;
+        }
+    }
+
+    file_put_contents(DATA_FILE, $data);
+}
+
+function editBook($originalTitle, $title, $grade, $isRead) {
+    $books = getAllBooks();
+    $data = "";
+
+    foreach ($books as $book) {
+        if ($book["title"] === $originalTitle) {
+            $book["title"] = $title;
+            $book["grade"] = $grade;
+            $book["isRead"] = $isRead;
         }
 
-        return $books;
+        $data = $data . urlencode($book["title"])
+            . "," . urlencode($book["grade"])
+            . "," . urlencode($book["isRead"]) . PHP_EOL;
+    }
+
+    file_put_contents(DATA_FILE, $data);
+}
+
+function getBookByTitle($title) {
+    $books = getAllBooks();
+
+    foreach ($books as $book) {
+        if ($book["title"] === $title) {
+            return $book;
+        }
+    }
+
+    return null;
 }
