@@ -5,8 +5,6 @@ require_once 'Request.php';
 
 $request = new Request($_REQUEST);
 
-//print $request; // display input parameters (for debugging)
-
 $cmd = $request->param('cmd')
     ? $request->param('cmd')
     : 'ctf_form';
@@ -47,7 +45,7 @@ if ($cmd === 'ftc_form') {
             'template' => 'ex3_form.html',
             'errors' => $errors,
             'value' => $input,
-            'cmd' => 'ctf_calculate',
+            'cmd' => 'ctf_calculate'
         ];
 
         print renderTemplate('tpl/ex3_main.html', $data);
@@ -73,7 +71,7 @@ if ($cmd === 'ftc_form') {
             'template' => 'ex3_form.html',
             'errors' => $errors,
             'value' => $input,
-            'cmd' => 'ftc_calculate',
+            'cmd' => 'ftc_calculate'
         ];
 
         print renderTemplate('tpl/ex3_main.html', $data);
