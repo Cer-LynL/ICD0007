@@ -38,6 +38,15 @@ $authors = getAllAuthors();
             </div>
         <?php endif; ?>
 
+        <?php if (isset($_SESSION["delete_message"])): ?>
+            <div id="message-block" class="alert">
+                <?php
+                echo $_SESSION["delete_message"];
+                unset($_SESSION["delete_message"]);
+                ?>
+            </div>
+        <?php endif; ?>
+
         <br>
         <div id="author-list">
             <div class="header-a">Eesnimi</div>
@@ -48,18 +57,18 @@ $authors = getAllAuthors();
             <?php foreach ($authors as $author): ?>
 
                 <div class="first">
-                    <a href="edit-author.php?firstName=<?= urlencode($author["firstName"]) ?>"><?= $author["firstName"] ?></a>
+                    <a href="edit-author.php?author_id=<?= urlencode($author[0]) ?>"><?= $author[1] ?></a>
                 </div>
 
                 <div class="first">
-                    <a><?= $author["lastName"] ?></a>
+                    <a><?= $author[2] ?></a>
                 </div>
 
-                <div class="break">
-                </div>
-
-                <div>
-                    <a><?= $author["grade"] ?></a>
+                <div class="emptyStar">
+                    <?php foreach (range(1, 5) as $grade): ?>
+                        <span class="<?= $author[3] >= $grade
+                            ? 'filledStar' : ''  ?>">&#9733;</span>
+                    <?php endforeach; ?>
                 </div>
 
                 <div class="break"></div>

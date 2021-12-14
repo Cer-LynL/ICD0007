@@ -12,7 +12,7 @@ $books = getAllBooks();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Raamatute nimekiri</title>
     <link href="styles.css" rel="stylesheet">
 </head>
 <body id="book-list-page">
@@ -39,6 +39,15 @@ $books = getAllBooks();
             </div>
         <?php endif; ?>
 
+        <?php if (isset($_SESSION["delete_message"])): ?>
+            <div id="message-block" class="alert">
+                <?php
+                echo $_SESSION["delete_message"];
+                unset($_SESSION["delete_message"]);
+                ?>
+            </div>
+        <?php endif; ?>
+
         <br>
         <div id="author-list">
             <div class="header-a">Pealkiri</div>
@@ -46,23 +55,29 @@ $books = getAllBooks();
             <div class="header-hinne">Hinne</div>
             <div class="header-divider"></div>
 
-            <?php foreach ($books as $each): ?>
+            <?php foreach ($books as $book): ?>
 
                 <div class="first">
-                    <a href="edit-book.php?title=<?= urlencode($each["title"]) ?>"><?= $each["title"] ?></a>
+                    <a href="edit-book.php?book_id=<?= urlencode($book[0]) ?>"><?= $book[1] ?></a>
                 </div>
 
-                <div class="break"></div>
+                <div class="first">
+                    <?php foreach (getAuthor($book[0]) as $index => $author_id): ?>
+                        <?= $author_id[0] ?> <?= $author_id[1] ?>
+                    <?php endforeach; ?>
 
-                <div>
-                    <a><?= $each["grade"] ?></a>
+                </div>
+
+                <div class="emptyStar">
+                    <?php foreach (range(1, 5) as $grade): ?>
+                        <span class="<?= $book[2] >= $grade
+                            ? 'filledStar' : ''  ?>">&#9733;</span>
+                    <?php endforeach; ?>
                 </div>
 
                 <div class="break"></div>
 
             <?php endforeach; ?>
-
-            <div class="break"></div>
 
         </div>
     </main>

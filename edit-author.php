@@ -10,37 +10,38 @@ $errors = [];
 $firstName = "";
 $lastName = "";
 $grade = "";
+$author_id = "";
 
 $author = null;
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
-    if (isset($_GET["firstName"])) {
-        $author = getBookByAuthor($_GET["firstName"]);
+    if (isset($_GET["author_id"])) {
+        $author = getBookByAuthor($_GET["author_id"]);
 
-        $firstName = $author["firstName"];
-        $lastName = $author["lastName"];
-        $grade = $author["grade"];
+        $author_id = $author[0];
+        $firstName = $author[1];
+        $lastName = $author[2];
+        $grade = $author[3];
 
     }
 
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-//    editAuthor($originalFirst, $originalLast, $firstName, $lastName, $grade);
 
     if (isset($_POST["deleteButton"])) {
-        $firstName = $_POST["first-to-delete"];
-        $lastName = $_POST["last-to-delete"];
+        $author_id = $_POST["author-to-delete"];
 
-        deleteAuthor($firstName, $lastName);
+        deleteAuthor($author_id);
+        $_SESSION["delete_message"] = "Kustutatud!";
 
         header("Location: /author-list.php");
     } else {
         $originalFirst = $_POST["first-to-delete"] ?? "";
-        $originalLast = $_POST["last-to-delete"] ?? "";
         $firstName = $_POST["firstName"] ?? "";
         $lastName = $_POST["lastName"] ?? "";
         $grade = $_POST["grade"] ?? "";
+        $author_id = $_POST["author-to-delete"] ?? "";
 
         if (strlen($firstName) < 1 || strlen($firstName) > 21) {
             $errors[] = "Eesnime pikkus on 1 kuni 21 tähemärki!";
@@ -49,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $errors[] = "Perenime pikkus on 2 kuni 22 tähemärki!";
         }
         if (empty($errors)) {
-            deleteAuthor($originalFirst, $originalLast);
+            deleteAuthor($author_id);
             saveAuthor($firstName, $lastName, $grade);
             $_SESSION["message"] = "Lisatud!";
             header("Location: /author-list.php");
@@ -84,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php if (!(empty($errors))): ?>
             <div id="error-block" class="alert">
                 <?php foreach ($errors as $error): ?>
-                    <?= $error ?><br>
+                    <strong><?= $error ?></strong><br>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
@@ -97,15 +98,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <label for="name">Eesnimi:</label>
             </div>
             <div class="input-cell">
-                <input id="name" name="firstName" value="<?= $author["firstName"] ?>" type="text"/>
-                <input type="hidden" name="originalName" value="<?= $author["firstName"] ?>"/>
+                <input id="name" name="firstName" value="<?= $author[1] ?>" type="text"/>
+                <input type="hidden" name="originalName" value="<?= $author[1] ?>"/>
             </div>
 
             <div class="label-cell">
                 <label for="last-name">Perekonnanimi:</label>
             </div>
             <div class="input-cell">
-                <input id="last-name" name="lastName" value="<?= $author["lastName"] ?>" type="text"/>
+                <input id="last-name" name="lastName" value="<?= $author[2] ?>" type="text"/>
             </div>
 
             <div class="label-cell">Hinne: </div>
@@ -130,8 +131,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="label-cell"></div>
             <div class="input-cell">
                 <input name="submitButton" type="submit" class="button" value="Salvesta">
-                <input name="first-to-delete" type="hidden" value="<?= $firstName ?>">
-                <input name="last-to-delete" type="hidden" value="<?= $lastName ?>"/>
+<!--                <input name="first-to-delete" type="hidden" value="--><?//= $firstName ?><!--">-->
+                <input name="author-to-delete" type="hidden" value="<?= $author_id ?>"/>
                 <input name="deleteButton" type="submit" class="deleteButton" value="Kustuta"/>
             </div>
         </form>

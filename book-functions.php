@@ -1,73 +1,118 @@
 <?php
 
-const DATA_FILE = __DIR__ . '/books.txt';
+require_once __DIR__ . '/ex5/connection.php';
 
-function saveBook($title, $grade, $isRead) {
+function saveBook($title, $grade, $isRead, $author_id) {
 
-    $line = urlencode($title)
-        . ', ' . urlencode($grade)
-        . ', ' . urlencode($isRead) . PHP_EOL;
+    $conn = getConnection();
 
-    file_put_contents(DATA_FILE, $line, FILE_APPEND);
+    if (empty($grade) || !is_numeric($grade)) {
+
+        $grade = null;
+
+    }
+    if (empty($isRead)) {
+
+        $isRead = null;
+
+    }
+
+    $sql = $conn->prepare('INSERT INTO books(title, grade, isRead, author_id)
+        VALUES(:title, :grade, :isRead, :author_id)');
+
+    $sql->bindValue(":title", urldecode($title));
+    $sql->bindValue(":grade", $grade);
+    $sql->bindValue(":isRead", $isRead);
+    $sql->bindValue(":author_id", $author_id);
+    $sql->execute();
+
 }
 
-function getAllBooks(): array
-{
+function getAllBooks(): array {
 
-    $lines = file(DATA_FILE);
+    $conn = getConnection();
+
+    $lines = $conn->prepare('SELECT book_id, title, b.grade, isRead, b.author_id
+                                 from cer_lynl.books b
+                                 left join authors a on b.author_id = a.author_id');
+
+    $lines->execute();
 
     $books = [];
 
-    foreach ($lines as $line) {
-        list($title, $grade, $isRead) = explode(",", $line);
-        $books[] = ["title" => urldecode($title), "grade" => urldecode($grade), "isRead" => urldecode($isRead)];
+    foreach ($lines as $row) {
+        $books[] = [$row['book_id'],
+            urldecode($row['title']),
+            $row['grade'],
+            $row['isRead'],
+            $row['author_id']];
     }
-
     return $books;
 }
 
-function deleteBook($title) {
-    $books = getAllBooks();
-    $data = "";
+function getAuthor($id): array {
 
-    foreach ($books as $book) {
-        if ($book["title"] !== $title) {
-            $data = $data . urlencode($book["title"])
-                . "," . urlencode($book["grade"])
-                . "," . urlencode($book["isRead"]) . PHP_EOL;
-        }
+    $conn = getConnection();
+
+    $lines = $conn->prepare("SELECT authors.firstName, authors.lastName FROM authors, books 
+WHERE books.author_id = authors.author_id AND book_id = :id");
+
+    $lines->bindValue(":id", $id);
+    $lines->execute();
+
+    $authorNames = [];
+
+    foreach ($lines as $row) {
+        $authorNames[] = [urldecode($row['firstName']), urldecode($row['lastName'])];
     }
-
-    file_put_contents(DATA_FILE, $data);
+    return $authorNames;
 }
 
-function editBook($originalTitle, $title, $grade, $isRead) {
-    $books = getAllBooks();
-    $data = "";
+function getAuthorAsString($id): string {
 
-    foreach ($books as $book) {
-        if ($book["title"] === $originalTitle) {
-            $book["title"] = $title;
-            $book["grade"] = $grade;
-            $book["isRead"] = $isRead;
+    $conn = getConnection();
+
+    $lines = $conn->prepare("SELECT author_id, firstName, lastName FROM authors");
+
+    $lines->execute();
+
+    $authorNames = "";
+
+    foreach ($lines as $row) {
+        if ($row['author_id'] == $id) {
+            $authorFirst = urldecode($row['firstName']);
+            $authorLast = urldecode($row['lastName']);
+            $authorNames = $authorNames.$authorFirst." ".$authorLast;
+
         }
 
-        $data = $data . urlencode($book["title"])
-            . "," . urlencode($book["grade"])
-            . "," . urlencode($book["isRead"]) . PHP_EOL;
     }
+    return $authorNames;
 
-    file_put_contents(DATA_FILE, $data);
 }
 
-function getBookByTitle($title) {
+function deleteBook($id) {
+
+    $conn = getConnection();
+
+    $stmt = $conn->prepare(
+        'DELETE FROM books WHERE book_id = :id');
+
+    $stmt->bindValue(':id', $id);
+
+    $stmt->execute();
+}
+
+function getBookByID($book_id) {
     $books = getAllBooks();
 
     foreach ($books as $book) {
-        if ($book["title"] === $title) {
+        if ($book[0] == $book_id) {
+
             return $book;
         }
     }
 
     return null;
+
 }

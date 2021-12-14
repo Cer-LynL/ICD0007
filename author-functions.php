@@ -1,70 +1,68 @@
 <?php
 
-const DATA_FILE = __DIR__ . '/authors.txt';
+require_once __DIR__ . '/ex5/connection.php';
+// require_once __DIR__ . '/Author.php';
 
 function saveAuthor($firstName, $lastName, $grade) {
 
-    $line = urlencode($firstName)
-        . ', ' . urlencode($lastName)
-        . ', ' . urlencode($grade) . PHP_EOL;
+    $conn = getConnection();
 
-    file_put_contents(DATA_FILE, $line, FILE_APPEND);
+    if (empty($grade) || !is_numeric($grade)) {
+
+        $grade = null;
+
+    }
+    $sql = $conn->prepare('INSERT INTO authors(firstName, lastName, grade)
+    VALUES(:firstName, :lastName, :grade)');
+
+    $sql->bindValue(":firstName", urldecode($firstName));
+    $sql->bindValue(":lastName", urldecode($lastName));
+    $sql->bindValue(":grade", $grade);
+
+    $sql->execute();
+
 }
 
 function getAllAuthors() : array{
 
-    $lines = file(DATA_FILE);
+    $conn = getConnection();
 
-    $names = [];
+    $lines = $conn->prepare('SELECT author_id, firstName, lastName, grade
+                                 from cer_lynl.authors 
+                                 order by author_id');
 
-    foreach ($lines as $line) {
-        list($firstName, $lastName, $grade) = explode(', ', $line);
+    $lines->execute();
 
-        $names[] = ["firstName" => urldecode($firstName), "lastName" => urldecode($lastName), "grade" => urldecode($grade)];
+    $authors = [];
+
+    foreach ($lines as $row) {
+        $authors[] = [$row['author_id'],
+            urldecode($row['firstName']),
+            urldecode($row['lastName']),
+            $row['grade']];
     }
 
-    return $names;
+    return $authors;
 }
 
-function deleteAuthor($firstName, $lastName) {
-    $authors = getAllAuthors();
-    $data = "";
+function deleteAuthor($id) {
 
-    foreach ($authors as $author) {
-        if (($author["firstName"] !== $firstName) && ($author["lastName"] !== $lastName)) {
-            $data = $data . urlencode($author["firstName"])
-                . ", " . urlencode($author["lastName"])
-                . ", " . urlencode($author["grade"]) . PHP_EOL;
-        }
-    }
+    $conn = getConnection();
 
-    file_put_contents(DATA_FILE, $data);
+    $stmt = $conn->prepare(
+        'DELETE FROM authors WHERE author_id = :id');
+
+    $stmt->bindValue(':id', $id);
+
+    $stmt->execute();
+
 }
 
-function editAuthor($originalFirst, $originalLast, $firstName, $lastName, $grade) {
-    $authors = getAllAuthors();
-    $data = "";
-
-    foreach ($authors as $author) {
-        if (($author["firstName"] === $originalFirst) && ($author["lastName"] === $originalLast)){
-            $author["firstName"] = $firstName;
-            $author["lastName"] = $lastName;
-            $author["grade"] = $grade;
-        }
-
-        $data = $data . urlencode($author["firstName"])
-            . ", " . urlencode($author["lastName"])
-            . ", " . urlencode($author["grade"]) . PHP_EOL;
-    }
-
-    file_put_contents(DATA_FILE, $data);
-}
-
-function getBookByAuthor($firstName) {
+function getBookByAuthor($author_id) {
     $authors = getAllAuthors();
 
     foreach ($authors as $author) {
-        if ($author["firstName"] === $firstName) {
+        if ($author[0] === $author_id) {
             return $author;
         }
     }

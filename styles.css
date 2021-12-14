@@ -109,7 +109,6 @@ nav, footer {
     border-style: solid;
     border-color: lavender;
     font-family: Verdana, sans-serif;
-    text-decoration: none;
 }
 
 input[type='text'], select{

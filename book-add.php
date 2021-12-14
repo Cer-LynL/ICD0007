@@ -3,24 +3,29 @@
 session_start();
 
 require_once("book-functions.php");
-
+require_once("author-functions.php");
 $errors = [];
+
+$authors = getAllAuthors();
+$books = getAllBooks();
 
 $title = "";
 $isRead = "";
 $grade = "";
+$author_id = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $title = $_POST["title"] ?? "";
     $grade = $_POST["grade"] ?? "";
     $isRead = $_POST["isRead"] ?? "";
+    $author_id = intval($_POST["author1"]) ?? "";
 
     if (strlen($title) < 3 || strlen($title) > 28) {
         $errors[] = "Pealkiri peab olema 3 kuni 28 tähemärki!";
     }
 
     if (empty($errors)) {
-        saveBook($title, $grade, $isRead);
+        saveBook($title, $grade, $isRead, $author_id);
         $_SESSION["message"] = "Lisatud!";
         header("Location: /");
     }
@@ -59,13 +64,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php endif; ?>
 
         <form id="input-form" action="book-add.php" method="post">
+
             <div class="label-cell">
                 <label for="title">Pealkiri: </label>
             </div>
             <div class="input-cell">
                 <input id="title" name="title" type='text' value="<?= $title ?>">
             </div>
+
             <div class="break"></div>
+
+            <div class="label-cell">
+                <label for="author1">Autor 1: </label>
+            </div>
+            <div class="input-cell">
+                    <select id="author1" name="author1">
+                        <option selected></option>
+                        <?php foreach ($authors as $author): ?>
+                            <option value="<?= $author[0] ?>">
+                                <?= $author[1] ?> <?= $author[2] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+            </div>
+
+            <div class="break"></div>
+
             <div class="label-cell">Hinne: </div>
             <div class="input-cell">
                 <label>
@@ -87,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="break"></div>
             <div class="label-cell"><label>Loetud:</label></div>
             <div class="input-cell"><label>
-                    <input id="isRead" name="isRead" type="checkbox" value="true" <?php if ($isRead == 'true') echo 'checked' ?>/>
+                    <input id="isRead" name="isRead" type="checkbox" value="1" <?php if ($isRead == '1') echo 'checked' ?>/>
                 </label>
             </div>
             <div class="break"></div>
