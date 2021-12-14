@@ -9,5 +9,5 @@ function getConnection() : PDO {
     $address = sprintf('mysql:host=%s;port=3306;dbname=%s',
         $host, USERNAME);
 
-    return new PDO($address, USERNAME, PASSWORD);
+    return new PDO($address, USERNAME, PASSWORD, array(PDO::ATTR_PERSISTENT => true));
 }
